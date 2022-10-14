@@ -6,8 +6,7 @@ const getLink = require("./scrapeLink");
 const app = express();
 app.use(cors());
 
-const port = 8090;
-
+const port = process.env.PORT || 3000;
 //scrape();
 
 app.get("/", scrape());
