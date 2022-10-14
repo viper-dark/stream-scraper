@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const scrape = require("./scraper");
-const getLink = require("./scrapeLink");
+const scrape = require("../scraper");
+const getLink = require("../scrapeLink");
 
 const app = express();
 app.use(cors());
@@ -27,4 +27,3 @@ app.get("/matchLink", async (req, res) => {
 app.listen(port, () => {
   console.log("server listening on http://localhost:" + port);
 });
-module.exports = app;
