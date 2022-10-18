@@ -1,7 +1,6 @@
 const axios = require("axios").default;
 const cherio = require("cherio");
-const fs = require("fs");
-const getStream = require("./src/scrapeStream");
+const getStream = require("./src/scrapeStream.js");
 
 async function getMatchLink(teams) {
   // part 1 getting the a href link
@@ -9,12 +8,10 @@ async function getMatchLink(teams) {
   const { data: homeHtml } = await axios.get("https://ma.livekoora.online/");
 
   let $ = cherio.load(homeHtml);
-  fs.writeFileSync("date.html", $.html());
 
   //const divContainers = $("div > div > div.match-event");
   const divContainers = $(" div > a ");
   console.log("didv container" + divContainers.length);
-  //fs.writeFileSync("div.html", divContainers);
 
   //iterating over the divs
   divContainers.each(function (i, elem) {
