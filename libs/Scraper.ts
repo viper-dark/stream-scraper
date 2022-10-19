@@ -165,11 +165,13 @@ export class Scraper {
       });
 
       //adding the hls data
-      this._hls_data.push({
-        m3u8Link: m3u8_url,
-        referer: iframe,
-        quality: this.iframe_urls[index].quality,
-      });
+      if (m3u8_url && iframe) {
+        this._hls_data.push({
+          m3u8Link: m3u8_url,
+          referer: iframe,
+          quality: this.iframe_urls[index].quality,
+        });
+      }
     }
     if (!this._hls_data.length) {
       console.error(
