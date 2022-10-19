@@ -16,8 +16,7 @@ export async function get_server(
 
   const data = scraper.hls_data;
   if (!data.length) {
-    console.error("ERROR trying to fetch data for server 1");
-    return -1;
+    throw new Error("ERROR trying to fetch data for server 1");
   }
   return data;
 }
