@@ -12,8 +12,7 @@ async function get_server(first_team, second_team) {
     await scraper.get_m3u8_urls();
     const data = scraper.hls_data;
     if (!data.length) {
-        console.error("ERROR trying to fetch data for server 1");
-        return -1;
+        throw new Error("ERROR trying to fetch data for server 1");
     }
     return data;
 }

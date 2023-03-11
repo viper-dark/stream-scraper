@@ -5,24 +5,24 @@ const getStream = require("./src/scrapeStream.js");
 async function getMatchLink(teams) {
   // part 1 getting the a href link
   let matchLink;
-  const { data: homeHtml } = await axios.get("https://ma.livekoora.online/");
+  const { data: homeHtml } = await axios.get("https://kora.yalla-shoot-new.live/");
 
   let $ = cherio.load(homeHtml);
 
   //const divContainers = $("div > div > div.match-event");
-  const divContainers = $(" div > a ");
+  const divContainers = $("div.match-event");
   console.log("didv container" + divContainers.length);
 
   //iterating over the divs
   divContainers.each(function (i, elem) {
-    const firstTeamName = $(" div.r-team > div.t-name", elem).text();
-    const secondTeamName = $("div.l-team > div.t-name", elem).text();
+    const firstTeamName = $(" div.right-team > div.team-name", elem).text();
+    const secondTeamName = $(" div.left-team > div.team-name", elem).text();
 
     //checking if it's the match we want ,by comparing the team names
     const teamsSeparated = teams.split(",");
     const teamsSelected = firstTeamName + "," + secondTeamName;
-    console.log("teams selected §§§" + teamsSelected);
-    console.log("match link §§§" + $(elem).attr("href"));
+    console.log("teams selected = " + teamsSelected);
+    console.log("match link = " + $("#overlay-match > a",elem).attr("href"));
 
     //if it matches ,quit the loop
     if (
@@ -30,8 +30,8 @@ async function getMatchLink(teams) {
       teamsSelected.includes(teamsSeparated[0])
     ) {
       //  matchLink = $("a#match-live", elem).attr("href");
-      matchLink = $(elem).attr("href");
-      console.log("hiiiiiiiiiiiii");
+      matchLink = $("#overlay-match > a",elem).attr("href");
+      console.log("match link found !");
 
       return false;
     }

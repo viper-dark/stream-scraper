@@ -1,8 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Scraper = void 0;
 const axios = require("axios").default;
 const cherio = require("cherio");
+const fs_1 = __importDefault(require("fs"));
 //env variables
 const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
@@ -31,23 +35,23 @@ class Scraper {
         let match_link = "";
         let $ = cherio.load(homeHtml);
         //const divContainers = $("div > div > div.match-event");
-        const divContainers = $(".containerMatch");
+        const divContainers = $(".match-event");
         console.info("didv container : " + divContainers.length);
         //iterating over the divs
         divContainers.each(function (i, elem) {
-            var _a, _b;
-            const firstTeamName = (_a = $("a", elem).attr("title")) === null || _a === void 0 ? void 0 : _a.split("vs")[0].trim();
-            const secondTeamName = (_b = $("a", elem).attr("title")) === null || _b === void 0 ? void 0 : _b.split("vs")[1].trim();
+            const firstTeamName = $("div.first-team > div.team-name", elem).text();
+            const secondTeamName = $("div.left-team > div.team-name", elem).text();
             //checking if it's the match we want ,by comparing the team names
             const teamsSelected = firstTeamName + "," + secondTeamName;
             //if it matches ,quit the loop
             if (teamsSelected.includes(first_team) ||
                 teamsSelected.includes(second_team)) {
                 //  matchLink = $("a#match-live", elem).attr("href");
-                match_link = $("a", elem).attr("href");
+                match_link = $("#match-live", elem).attr("href");
                 return false;
             }
         });
+        console.log("match link : " + match_link);
         this.match_link = match_link;
         //if no link is found return with 1
         if (!this.match_link) {
@@ -67,14 +71,28 @@ class Scraper {
         const { data: linkHtml } = await axios.get(this.match_link);
         let $ = cherio.load(linkHtml);
         //neted iframe boooooooooo
-        const { data: frame_html } = await axios.get($("iframe").attr("src"), {
+        function getUrlVars(m) {
+            var vars = {};
+            var parts = m.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+        const scrFrame = getUrlVars(this.match_link)["src"];
+        const { data: frame_html } = await axios.get(scrFrame, {
             headers: { Referer: this.match_link },
         });
         $ = cherio.load(frame_html);
+        fs_1.default.writeFileSync("zab.html", frame_html);
         const iframeUrls = [];
         //iterating over the btns
-        $("body > ul > li> a").each(function (i, elem) {
+        $("body > ul > li > a").each(function (i, elem) {
             const quality = $(this).text().trim();
+            console.log(quality);
+            //only 480 and 360 
+            if (!(quality.includes("480p") || quality.includes("360p"))) {
+                return false;
+            }
             const onclickAtt = $(this).attr("href");
             let iframeUrl = {
                 quality,
@@ -85,6 +103,7 @@ class Scraper {
         });
         if (iframeUrls) {
             this.iframe_urls = [...iframeUrls];
+            console.log("iframe url found : " + this.iframe_urls);
             return iframeUrls.length;
         }
         else {
@@ -142,11 +161,13 @@ class Scraper {
                 }
             });
             //adding the hls data
-            this._hls_data.push({
-                m3u8Link: m3u8_url,
-                referer: iframe,
-                quality: this.iframe_urls[index].quality,
-            });
+            if (m3u8_url && iframe) {
+                this._hls_data.push({
+                    m3u8Link: m3u8_url,
+                    referer: iframe,
+                    quality: this.iframe_urls[index].quality,
+                });
+            }
         }
         if (!this._hls_data.length) {
             console.error("ERROR no hls data found !make sure you have called the necessery methods first!");

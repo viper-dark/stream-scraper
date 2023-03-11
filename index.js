@@ -28,7 +28,8 @@ app.get("/matchLink", async (req, res) => {
         break;
     }
   } catch (error) {
-    console.error(error + "!!!!!!!!!!" + teams[0] + " vs " + teams[1]);
+    console.error(error );
+    console.error(error + "!!" + teams[0] + " vs " + teams[1]);
     return res
       .status(500)
       .send("internal server error " + teams[0] + " vs " + teams[1]);

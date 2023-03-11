@@ -5,16 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "cd tests && tsc test.ts && node test.js",
-    "start": "node index.js"
+    "start": "nodemon index.js",
+    "debug": "nodemon test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/jsdom": "^21.1.0",
     "axios": "^0.24.0",
     "cherio": "^1.0.0-rc.2",
     "dotenv": "^16.0.3",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "jsdom": "^21.1.0",
+    "puppeteer": "^19.7.4"
   },
   "devDependencies": {
     "jest": "^29.2.0",
