@@ -1,11 +1,11 @@
-import { Scraper } from "../libs/Scraper.js";
+import { ScraperDynamic } from "../libs/ScraperDynamic";
 
 //first test correct match link
 export async function get_server(
   first_team: string,
   second_team: string
 ): Promise<any> {
-  const scraper = new Scraper(first_team, second_team);
+  const scraper = new ScraperDynamic(first_team, second_team);
   await scraper.get_match_link();
 
   //second step

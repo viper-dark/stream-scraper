@@ -9,10 +9,10 @@ export class Scraper {
   private readonly first_team: string;
   private readonly second_team: string;
   //remeneber to remove the test value
-  private match_link: string = "";
-  private iframe_urls: any[] = [];
+  match_link: string = "";
+  iframe_urls: any[] = [];
   //the hsl data
-  private _hls_data: any[] = [];
+  _hls_data: any[] = [];
 
   constructor(first_team: string, second_team: string) {
     this.first_team = first_team;
@@ -29,8 +29,8 @@ export class Scraper {
    */
   public async get_match_link(): Promise<boolean> {
     const { data: homeHtml } = await axios.get(process.env.site);
-    
-    
+
+
     const first_team = this.first_team;
     const second_team = this.second_team;
     let match_link = "";
@@ -60,8 +60,8 @@ export class Scraper {
         return false;
       }
     });
-    console.log("match link : "+ match_link);
-    
+    console.log("match link : " + match_link);
+
     this.match_link = match_link;
 
     //if no link is found return with 1
@@ -83,11 +83,11 @@ export class Scraper {
   public async get_urls_attached_to_btns(): Promise<number> {
     const { data: linkHtml } = await axios.get(this.match_link);
     let $ = cherio.load(linkHtml);
-    
-     
-     
+
+
+
     //neted iframe boooooooooo
-    function getUrlVars( m) {
+    function getUrlVars(m) {
       var vars = {};
       var parts = m.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
         vars[key] = value;
@@ -95,15 +95,15 @@ export class Scraper {
       return vars;
     }
     const scrFrame = getUrlVars(this.match_link)["src"];
-   
+
     const { data: frame_html } = await axios.get(scrFrame, {
       headers: { Referer: this.match_link },
     });
-   
-     
-    
+
+
+
     $ = cherio.load(frame_html);
-    fs.writeFileSync("zab.html",frame_html)
+    fs.writeFileSync("zab.html", frame_html)
 
     const iframeUrls: any[] = [];
     //iterating over the btns
@@ -111,8 +111,7 @@ export class Scraper {
       const quality = $(this).text().trim();
       console.log(quality)
       //only 480 and 360 
-      if(! (quality.includes("480p") || quality.includes("360p")))
-      {
+      if (!(quality.includes("480p") || quality.includes("360p"))) {
         return false
       }
       const onclickAtt = $(this).attr("href");
@@ -127,8 +126,8 @@ export class Scraper {
     });
     if (iframeUrls) {
       this.iframe_urls = [...iframeUrls];
-      console.log("iframe url found : "+this.iframe_urls);
-      
+      console.log("iframe url found : " + this.iframe_urls);
+
       return iframeUrls.length;
     } else {
       console.log("Error no video iframe btns found !");
