@@ -14,9 +14,10 @@
   "dependencies": {
     "axios": "^0.24.0",
     "cherio": "^1.0.0-rc.2",
+    "chrome-aws-lambda": "^10.1.0",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
-    "puppeteer": "^19.7.4"
+    "puppeteer-core": "^19.7.4"
   },
   "devDependencies": {
     "jest": "^29.2.0",
