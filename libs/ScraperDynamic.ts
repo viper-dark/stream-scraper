@@ -1,5 +1,22 @@
 import { Scraper } from './Scraper.js'
-import puppeteer from 'puppeteer'
+//import puppeteer from 'puppeteer'
+//zzzzzzzzzzzzzzzzzz
+
+let chrome = {};
+let puppeteer;
+
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+    chrome = require("chrome-aws-lambda");
+    puppeteer = require("puppeteer-core");
+} else {
+    puppeteer = require("puppeteer");
+}
+
+
+let options = {};
+
+
+
 import axios from 'axios';
 const cherio = require("cherio");
 export class ScraperDynamic extends Scraper {
@@ -8,7 +25,20 @@ export class ScraperDynamic extends Scraper {
 
     }
     override async get_urls_attached_to_btns() {
-        const browser = await puppeteer.launch({ headless: true });
+
+
+        if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+            options = {
+                args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+                defaultViewport: chrome.defaultViewport,
+                executablePath: await chrome.executablePath,
+                headless: true,
+                ignoreHTTPSErrors: true,
+            };
+        }
+
+        const browser = await puppeteer.launch(options)
+        // const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
 
         await page.goto(this.match_link);
