@@ -5,7 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ScraperDynamic = void 0;
 const Scraper_js_1 = require("./Scraper.js");
-const puppeteer_1 = __importDefault(require("puppeteer"));
+//import puppeteer from 'puppeteer'
+const chromium = require('chrome-aws-lambda');
 const axios_1 = __importDefault(require("axios"));
 const cherio = require("cherio");
 class ScraperDynamic extends Scraper_js_1.Scraper {
@@ -13,7 +14,14 @@ class ScraperDynamic extends Scraper_js_1.Scraper {
         super(first_team, second_team);
     }
     async get_urls_attached_to_btns() {
-        const browser = await puppeteer_1.default.launch({ headless: true });
+        const browser = await chromium.puppeteer.launch({
+            args: chromium.args,
+            defaultViewport: chromium.defaultViewport,
+            executablePath: await chromium.executablePath,
+            headless: chromium.headless,
+            ignoreHTTPSErrors: true,
+        });
+        // const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
         await page.goto(this.match_link);
         //waiting t=for the frame to load
