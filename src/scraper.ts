@@ -42,7 +42,7 @@ function matchData(day = "today") {
       const response = await axios.get(url);
       html = response.data;
     } catch (error) {
-      console.error(error);
+      console.error("some shit happend");
       throw error;
       
     }

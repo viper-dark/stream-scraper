@@ -39,7 +39,7 @@ function matchData(day = "today") {
             html = response.data;
         }
         catch (error) {
-            console.error(error);
+            console.error("some shit happend");
             throw error;
         }
         console.log("got the html fine !!!!!!!!!!!!!");
