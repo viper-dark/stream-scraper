@@ -44,7 +44,9 @@ function matchData(day = "today") {
     } catch (error) {
       console.error(error);
     }
-
+  console.log("got the html fine !!!!!!!!!!!!!");
+  console.log(html);
+  
     const $ = cherio.load(html);
 
     const els = $("a.matsh_live").each(function (i, elem) {

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.get_server = void 0;
-const ScraperDynamic_1 = require("../libs/ScraperDynamic.js");
+const ScraperDynamic_1 = require("./libs/ScraperDynamic");
 //first test correct match link
 async function get_server(first_team, second_team) {
     const scraper = new ScraperDynamic_1.ScraperDynamic(first_team, second_team);

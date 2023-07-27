@@ -1,6 +1,6 @@
 const axios = require("axios").default;
 const cherio = require("cherio");
-const getStream = require("./src/scrapeStream.js");
+const getStream = require("./scrapeStream.js");
 
 async function getMatchLink(teams) {
   // part 1 getting the a href link

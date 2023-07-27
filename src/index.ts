@@ -1,10 +1,10 @@
 const express = require("express");
-const scrape = require("./scraper.js");
-const getLink = require("./scrapeLink.js");
-const { get_server } = require("./src/server1.js");
+const scrape = require("./scraper");
+const getLink = require("./scrapeLink");
+const { get_server } = require("./server1");
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 app.get("/", scrape());
 app.get("/yesterday", scrape("yesterday"));

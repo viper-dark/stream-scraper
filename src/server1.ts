@@ -1,4 +1,4 @@
-import { ScraperDynamic } from "../libs/ScraperDynamic";
+import { ScraperDynamic } from "./libs/ScraperDynamic";
 
 //first test correct match link
 export async function get_server(
