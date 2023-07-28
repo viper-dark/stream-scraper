@@ -39,15 +39,30 @@ function matchData(day = "today") {
     //making the request to the url
 
     try {
-      const response = await axios.get(url);
-      html = response.data;
-    } catch (error) {
+   //   const response = await axios.get(url);
+     // html = response.data;
+
+     
+        const response = await fetch("https://www.kooora.com/default.aspx");
+    
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+    
+        const htmlContent = await response.text();
+        html = htmlContent
+        console.log(html);
+        
+
+    }
+     catch (error) {
       console.error("some shit happend");
+      console.error(error.message);
       throw error;
       
     }
   console.log("got the html fine !!!!!!!!!!!!!");
-  console.log(html);
+ // console.log(html);
   
     const $ = cherio.load(html);
 

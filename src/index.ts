@@ -29,7 +29,9 @@ app.get("/matchLink", async (req, res) => {
     }
   } catch (error) {
     console.error(error );
-    console.error(error + "!!" + teams[0] + " vs " + teams[1]);
+    console.error(error + "/n" );
+    console.error("///////////////////////////////////");
+    console.error("error getting data for teams" + teams[0] + " vs " + teams[1]);
     return res
       .status(500)
       .send("internal server error " + teams[0] + " vs " + teams[1]);
