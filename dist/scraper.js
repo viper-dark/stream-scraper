@@ -2,6 +2,7 @@
 //const puppeteer = require("puppeteer");
 const axios = require("axios").default;
 const cherio = require("cherio");
+const fetch = require("node-fetch");
 /* async function scrape_movies() {
   const browser = await puppeteer.launch({
     headless: false,
@@ -35,6 +36,8 @@ function matchData(day = "today") {
             : `${website}/match/${day}_matches.php`;
         //making the request to the url
         try {
+            //   const response = await axios.get(url);
+            // html = response.data;
             const headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36',
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -47,8 +50,12 @@ function matchData(day = "today") {
                 method: 'GET',
                 headers: headers,
             };
-            const response = await axios.get(url, { headers });
-            html = response.data;
+            const response = await fetch(url, requestOptions);
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            const htmlContent = await response.text();
+            html = htmlContent;
             console.log(html);
         }
         catch (error) {
