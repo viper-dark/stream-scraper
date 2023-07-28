@@ -32,24 +32,24 @@ function matchData(day = "today") {
         let html;
         const games = [];
         //day takes only these values
-        if (!matchDay.includes(day)) {
-            throw new Error("day expects today | yesterday | tomorrow");
-        }
-        const website = "https://yalla-shoot.com";
-        const url = day == "today"
-            ? website + "/live/index.php"
-            : `${website}/match/${day}_matches.php`;
+        /* if (!matchDay.includes(day)) {
+           throw new Error("day expects today | yesterday | tomorrow");
+         }
+         const website = "https://yalla-shoot.com";
+         const url =
+           day == "today"
+             ? website + "/live/index.php"
+             : `${website}/match/${day}_matches.php`; */
         //making the request to the url
         try {
             //   const response = await axios.get(url);
             // html = response.data;
-            const response = await fetch(url, utils_1.default);
+            const response = await fetch("https://stad.yalla-shoot.io/today-matches1/", utils_1.default);
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
             const htmlContent = await response.text();
             html = htmlContent;
-            console.log(html);
         }
         catch (error) {
             console.error("some shit happend");
@@ -57,51 +57,45 @@ function matchData(day = "today") {
             throw error;
         }
         console.log("got the html fine !!!!!!!!!!!!!");
-        // console.log(html);
         const $ = cherio.load(html);
-        const els = $("a.matsh_live").each(function (i, elem) {
+        const els = $("#today > div.albaflex > div").each(function (i, elem) {
             const game = {};
             //team names
-            game.firstTeam = $("td.fc_name[align = right ]", elem).text();
-            game.secondTeam = $("td.fc_name[align = left ]", elem).text();
+            game.firstTeam = $(" a > div.left-team > div.team-name", elem).text();
+            game.secondTeam = $("a > div.right-team > div.team-name", elem).text();
             //team logos
-            game.firstTeamLogo = $("tr td[ align=right ] img", elem)
-                .attr("src")
-                .replace("..", website);
-            game.secondTeamLogo = $("tr td[ align=left ] img", elem)
-                .attr("src")
-                .replace("..", website);
-            //commentators
-            game.comentator = $("td  p", elem).eq(1).text();
+            game.firstTeamLogo = $("a > div.left-team > div.team-logo > img", elem)
+                .attr("data-src");
+            game.secondTeamLogo = $("a > div.right-team > div.team-logo > img", elem)
+                .attr("data-src");
             //championship
-            game.championship = $("td  p", elem).eq(2).text();
+            game.championship = $("a > div.match-info > ul > li", elem).eq(2).text();
+            //commentators
+            game.comentator = $(" a > div.match-info > ul > li", elem).eq(1).text();
             //channels
-            game.channels = $("td  p", elem).eq(0).text();
+            game.channels = $("a > div.match-info > ul > li", elem).eq(0).text();
             //result or game time
-            const resOrtime = $("td span.fc_time", elem).text();
+            // const resOrtime = $("td span.fc_time", elem).text();
+            const time = $("#match-time", elem).text();
+            const result = $("#result", elem).text();
+            const notStarted = $(" a > div.match-center > div > div.not-start", elem).text();
+            const ended = $(" a > div.match-center > div > div.end", elem).text();
             //handeling time
-            if (resOrtime.includes("KSA")) {
-                let timePeriod = resOrtime.includes("مساء") ? "PM" : "AM";
-                const singleDigit = resOrtime.match(/\d/) + "";
-                const timeDigits = resOrtime.match(/\d+/g);
-                //transform to moroccan time
-                let hours = timeDigits[0] - 2;
-                if (hours < 1) {
-                    hours += 12;
-                    timePeriod = timePeriod == "PM" ? "AM" : "PM";
-                }
-                const minutes = timeDigits[1];
-                game.time = `${hours}:${minutes} ${timePeriod}`;
-                game.started = false;
+            let timePeriod = time.includes("مساء") ? "PM" : "AM";
+            const singleDigit = time.match(/\d/) + "";
+            const timeDigits = time.match(/\d+/g);
+            //transform to moroccan time
+            let hours = timeDigits[0] - 2;
+            if (hours < 1) {
+                hours += 12;
+                timePeriod = timePeriod == "PM" ? "AM" : "PM";
             }
+            const minutes = timeDigits[1];
+            game.time = `${hours}:${minutes} ${timePeriod}`;
+            game.started = false;
             //handeling result
-            else {
-                game.result = resOrtime.replace(/\n/g, "");
-                game.started = true;
-            }
             //checking if game has ended or not
-            const p = $("span.matsh_end", elem).eq(1).text();
-            game.hasEnded = Boolean(p);
+            game.hasEnded = ended ? true : false;
             games.push(game);
         });
         return res.status(200).json({
