@@ -1,9 +1,12 @@
 const axios = require("axios").default;
 const cherio = require("cherio");
+import requestOptions from "./utils";
+import fetch from "node-fetch"
 import fs from "fs"
+import { log } from "console";
 //env variables
 const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
 //___________________________________________________________//
 export class Scraper {
   private readonly first_team: string;
@@ -28,7 +31,27 @@ export class Scraper {
    * getting the link that's playing the match we're targeting
    */
   public async get_match_link(): Promise<boolean> {
-    const { data: homeHtml } = await axios.get(process.env.site);
+    let  homeHtml=""
+    try {
+    //  const { data: homeHtml } = await axios.get(process.env.site,requestOptions);
+    
+    const response = await fetch(process.env.site,requestOptions);
+    
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        console.log("///////////////////");
+        
+    
+         homeHtml = await response.text();
+        console.log("the html");
+        
+        
+      
+    } catch (error) {
+      console.log("erooooooooooooor happend")
+throw error
+    }
 
 
     const first_team = this.first_team;

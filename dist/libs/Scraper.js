@@ -6,10 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Scraper = void 0;
 const axios = require("axios").default;
 const cherio = require("cherio");
+const utils_1 = __importDefault(require("./utils"));
+const node_fetch_1 = __importDefault(require("node-fetch"));
 const fs_1 = __importDefault(require("fs"));
 //env variables
 const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
 //___________________________________________________________//
 class Scraper {
     constructor(first_team, second_team) {
@@ -29,7 +31,21 @@ class Scraper {
      * getting the link that's playing the match we're targeting
      */
     async get_match_link() {
-        const { data: homeHtml } = await axios.get(process.env.site);
+        let homeHtml = "";
+        try {
+            //  const { data: homeHtml } = await axios.get(process.env.site,requestOptions);
+            const response = await (0, node_fetch_1.default)(process.env.site, utils_1.default);
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            console.log("///////////////////");
+            homeHtml = await response.text();
+            console.log("the html");
+        }
+        catch (error) {
+            console.log("erooooooooooooor happend");
+            throw error;
+        }
         const first_team = this.first_team;
         const second_team = this.second_team;
         let match_link = "";
