@@ -56,7 +56,7 @@ function matchData(day = "today") {
     };
 
      
-        const response = await fetch(url,requestOptions);
+        const response = await fetch("https://4kora.mpokora-online.com/",requestOptions);
     
         if (!response.ok) {
           throw new Error("Network response was not ok");
