@@ -4,8 +4,6 @@ import { Scraper } from './Scraper.js';
 let chrome = {};
 let puppeteer;
 (async () => {
-    let puppeteer;
-    let options = {};
     if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
         chrome = await import("chrome-aws-lambda");
         puppeteer = await import("puppeteer-core");
