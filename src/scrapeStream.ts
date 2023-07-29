@@ -1,5 +1,5 @@
-const axios = require("axios").default;
-const cherio = require("cherio");
+import axios from "axios";
+import cherio from "cherio";
 
 async function getStream(iframeLink: string) {
   //getting the iframe html content
@@ -40,4 +40,4 @@ async function getStream(iframeLink: string) {
 
   return { m3uLink, Referer };
 }
-module.exports = getStream;
+export default getStream;

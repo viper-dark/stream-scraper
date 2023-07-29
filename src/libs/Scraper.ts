@@ -1,12 +1,18 @@
-const axios = require("axios").default;
-const cherio = require("cherio");
-import requestOptions from "./utils";
+import axios from "axios";
+import cherio from "cherio";
+import {requestOptions} from "./utils.js";
 import fetch from "node-fetch"
 import fs from "fs"
-import { log } from "console";
+
 //env variables
-const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
+/* const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../../.env") }); */
+import path from "path";
+import dotenv from "dotenv";
+const __filename = new URL(import.meta.url).pathname;
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 //___________________________________________________________//
 export class Scraper {
   private readonly first_team: string;

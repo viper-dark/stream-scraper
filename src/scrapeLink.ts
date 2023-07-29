@@ -1,6 +1,6 @@
-const axios = require("axios").default;
-const cherio = require("cherio");
-const getStream = require("./scrapeStream.js");
+import axios from "axios";
+import cherio from "cherio";
+import getStream from "./scrapeStream.js"
 
 async function getMatchLink(teams) {
   // part 1 getting the a href link
@@ -174,4 +174,4 @@ async function getIframeLink(matchLink) {
     ? iframeUrls
     : console.log("Error no video iframe btns found !");
 }
-module.exports = getMatchLink;
+export default getMatchLink;

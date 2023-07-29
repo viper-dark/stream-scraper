@@ -1,8 +1,14 @@
-const express = require("express");
-const scrape = require("./scraper");
-const getLink = require("./scrapeLink");
-const { get_server } = require("./server1");
+import express from "express";
+import scrape from "./scraper.js";
+import getLink from "./scrapeLink.js";
+import { get_server } from "./server1.js";
+import path from "path";
+import dotenv from "dotenv";
 const app = express();
+
+
+
+dotenv.config();
 
 const port = process.env.PORT || 3001;
 
@@ -52,4 +58,4 @@ app.listen(port, () => {
   console.info("server listening on http://localhost:" + port);
 });
 
-module.exports = app;
+export default app;

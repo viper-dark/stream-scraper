@@ -1,5 +1,5 @@
  
-import { ScraperDynamic } from "./libs/ScraperDynamic";
+import { ScraperDynamic } from "./libs/ScraperDynamic.js";
 import { throws } from "assert";
 
 //first test correct match link

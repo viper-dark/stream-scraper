@@ -5,12 +5,32 @@ import { Scraper } from './Scraper.js'
 let chrome = {};
 let puppeteer;
 
-if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+(async () => {
+    let puppeteer;
+    let options = {};
+  
+    if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+      const chrome = await import("chrome-aws-lambda");
+      puppeteer = await import("puppeteer-core");
+      
+    } else {
+      puppeteer = await import("puppeteer");
+    }
+  
+    // The rest of your code goes here...
+    // You can access 'puppeteer' and 'options' variables inside this IIFE.
+    // Example:
+   /*  console.log(puppeteer);
+    console.log(options); */
+  
+    // Continue with your code...
+  })();
+/* if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
     chrome = require("chrome-aws-lambda");
     puppeteer = require("puppeteer-core");
 } else {
     puppeteer = require("puppeteer");
-}
+} */
 
 
 let options = {};
@@ -18,7 +38,7 @@ let options = {};
 
 
 import axios from 'axios';
-const cherio = require("cherio");
+import cherio from 'cherio';
 export class ScraperDynamic extends Scraper {
     constructor(first_team: string, second_team: string) {
         super(first_team, second_team)

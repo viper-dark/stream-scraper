@@ -1,50 +1,22 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-//const puppeteer = require("puppeteer");
-const axios = require("axios").default;
-const cherio = require("cherio");
-const fetch = require("node-fetch");
-const utils_1 = __importDefault(require("./libs/utils"));
-/* async function scrape_movies() {
-  const browser = await puppeteer.launch({
-    headless: false,
-  });
-  const page = await browser.newPage();
-  await page.goto("https://kora.livekoora.online/", {
-    waitUntil: "networkidle0",
-  });
-
-  //await page.waitForSelector("video");
-  const html = await page.content();
-
-  await fs.writeFile("data.html", html, () => {
-    console.log("html written succefullys");
-  });
-  // other actions...
-  await browser.close();
-} */
+import cherio from "cherio";
+import fetch from "node-fetch";
+import { requestOptions, parseTime } from "./libs/utils.js";
 function matchData(day = "today") {
     return async (req, res) => {
         const matchDay = ["today", "yesterday", "tomorrow"];
         let html;
         const games = [];
         //day takes only these values
-        /* if (!matchDay.includes(day)) {
-           throw new Error("day expects today | yesterday | tomorrow");
-         }
-         const website = "https://yalla-shoot.com";
-         const url =
-           day == "today"
-             ? website + "/live/index.php"
-             : `${website}/match/${day}_matches.php`; */
+        if (!matchDay.includes(day)) {
+            throw new Error("day expects today | yesterday | tomorrow");
+        }
+        const website = process.env.YALLA_KORA;
+        const url = day == "today"
+            ? website + "today-matches1/"
+            : `${website}/matches-${day}`;
         //making the request to the url
         try {
-            //   const response = await axios.get(url);
-            // html = response.data;
-            const response = await fetch("https://stad.yalla-shoot.io/today-matches1/", utils_1.default);
+            const response = await fetch(url, requestOptions);
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
@@ -56,7 +28,7 @@ function matchData(day = "today") {
             console.error(error.message);
             throw error;
         }
-        console.log("got the html fine !!!!!!!!!!!!!");
+        console.log(" got the html fine !!");
         const $ = cherio.load(html);
         const els = $("#today > div.albaflex > div").each(function (i, elem) {
             const game = {};
@@ -81,19 +53,22 @@ function matchData(day = "today") {
             const notStarted = $(" a > div.match-center > div > div.not-start", elem).text();
             const ended = $(" a > div.match-center > div > div.end", elem).text();
             //handeling time
-            let timePeriod = time.includes("مساء") ? "PM" : "AM";
-            const singleDigit = time.match(/\d/) + "";
-            const timeDigits = time.match(/\d+/g);
+            //  let timePeriod = time.includes("PM") ? "PM" : "AM";
+            /*   const singleDigit = time.match(/\d/) + "";
+              const timeDigits = time.match(/\d+/g);
+       */
             //transform to moroccan time
-            let hours = timeDigits[0] - 2;
+            /* let hours = timeDigits[0] - 2;
+    
             if (hours < 1) {
-                hours += 12;
-                timePeriod = timePeriod == "PM" ? "AM" : "PM";
-            }
-            const minutes = timeDigits[1];
-            game.time = `${hours}:${minutes} ${timePeriod}`;
-            game.started = false;
-            //handeling result
+              hours += 12;
+              timePeriod = timePeriod == "PM" ? "AM" : "PM";
+            } */
+            //  const houss= time.split(":")        const minutes = timeDigits[1];
+            game.time = parseTime(time);
+            game.started = notStarted ? false : true;
+            //handeling result if endded or started set time
+            game.result = game.started || ended ? result : undefined;
             //checking if game has ended or not
             game.hasEnded = ended ? true : false;
             games.push(game);
@@ -103,4 +78,4 @@ function matchData(day = "today") {
         });
     };
 }
-module.exports = matchData;
+export default matchData;

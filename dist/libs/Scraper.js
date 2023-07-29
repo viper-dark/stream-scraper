@@ -1,19 +1,18 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Scraper = void 0;
-const axios = require("axios").default;
-const cherio = require("cherio");
-const utils_1 = __importDefault(require("./utils"));
-const node_fetch_1 = __importDefault(require("node-fetch"));
-const fs_1 = __importDefault(require("fs"));
+import axios from "axios";
+import cherio from "cherio";
+import { requestOptions } from "./utils.js";
+import fetch from "node-fetch";
+import fs from "fs";
 //env variables
-const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
+/* const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../../.env") }); */
+import path from "path";
+import dotenv from "dotenv";
+const __filename = new URL(import.meta.url).pathname;
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 //___________________________________________________________//
-class Scraper {
+export class Scraper {
     constructor(first_team, second_team) {
         //remeneber to remove the test value
         this.match_link = "";
@@ -34,7 +33,7 @@ class Scraper {
         let homeHtml = "";
         try {
             //  const { data: homeHtml } = await axios.get(process.env.site,requestOptions);
-            const response = await (0, node_fetch_1.default)(process.env.site, utils_1.default);
+            const response = await fetch(process.env.site, requestOptions);
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
@@ -99,7 +98,7 @@ class Scraper {
             headers: { Referer: this.match_link },
         });
         $ = cherio.load(frame_html);
-        fs_1.default.writeFileSync("zab.html", frame_html);
+        fs.writeFileSync("zab.html", frame_html);
         const iframeUrls = [];
         //iterating over the btns
         $("body > ul > li > a").each(function (i, elem) {
@@ -192,4 +191,3 @@ class Scraper {
         return true;
     }
 }
-exports.Scraper = Scraper;

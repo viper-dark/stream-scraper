@@ -1,25 +1,35 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ScraperDynamic = void 0;
-const Scraper_js_1 = require("./Scraper.js");
+import { Scraper } from './Scraper.js';
 //import puppeteer from 'puppeteer'
 //zzzzzzzzzzzzzzzzzz
 let chrome = {};
 let puppeteer;
-if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+(async () => {
+    let puppeteer;
+    let options = {};
+    if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+        const chrome = await import("chrome-aws-lambda");
+        puppeteer = await import("puppeteer-core");
+    }
+    else {
+        puppeteer = await import("puppeteer");
+    }
+    // The rest of your code goes here...
+    // You can access 'puppeteer' and 'options' variables inside this IIFE.
+    // Example:
+    /*  console.log(puppeteer);
+     console.log(options); */
+    // Continue with your code...
+})();
+/* if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
     chrome = require("chrome-aws-lambda");
     puppeteer = require("puppeteer-core");
-}
-else {
+} else {
     puppeteer = require("puppeteer");
-}
+} */
 let options = {};
-const axios_1 = __importDefault(require("axios"));
-const cherio = require("cherio");
-class ScraperDynamic extends Scraper_js_1.Scraper {
+import axios from 'axios';
+import cherio from 'cherio';
+export class ScraperDynamic extends Scraper {
     constructor(first_team, second_team) {
         super(first_team, second_team);
     }
@@ -63,7 +73,7 @@ class ScraperDynamic extends Scraper_js_1.Scraper {
             const { url, referer } = this.iframe_urls[index];
             let m3u8_url = "";
             //making our final html request
-            const { data: iframeHtml } = await axios_1.default.get(url, {
+            const { data: iframeHtml } = await axios.get(url, {
                 headers: { Referer: referer },
             });
             let $ = cherio.load(iframeHtml);
@@ -109,4 +119,3 @@ class ScraperDynamic extends Scraper_js_1.Scraper {
         return true;
     }
 }
-exports.ScraperDynamic = ScraperDynamic;

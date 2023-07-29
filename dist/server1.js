@@ -1,10 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_server = void 0;
-const ScraperDynamic_1 = require("./libs/ScraperDynamic");
+import { ScraperDynamic } from "./libs/ScraperDynamic.js";
 //first test correct match link
-async function get_server(first_team, second_team) {
-    const scraper = new ScraperDynamic_1.ScraperDynamic(first_team, second_team);
+export async function get_server(first_team, second_team) {
+    const scraper = new ScraperDynamic(first_team, second_team);
     try {
         await scraper.get_match_link();
     }
@@ -38,4 +35,3 @@ async function get_server(first_team, second_team) {
     }
     return data;
 }
-exports.get_server = get_server;

@@ -1,27 +1,10 @@
 //const puppeteer = require("puppeteer");
-const axios = require("axios").default;
-const cherio = require("cherio");
-const fetch =require("node-fetch")
+import axios from "axios";
+import cherio from "cherio";
+import fetch from "node-fetch";
 import { log } from "console";
-import requestOptions from "./libs/utils";
-/* async function scrape_movies() {
-  const browser = await puppeteer.launch({
-    headless: false,
-  });
-  const page = await browser.newPage();
-  await page.goto("https://kora.livekoora.online/", {
-    waitUntil: "networkidle0",
-  });
+import {requestOptions,parseTime} from "./libs/utils.js";
 
-  //await page.waitForSelector("video");
-  const html = await page.content();
-
-  await fs.writeFile("data.html", html, () => {
-    console.log("html written succefullys");
-  });
-  // other actions...
-  await browser.close();
-} */
 
 function matchData(day = "today") {
   return async (req, res) => {
@@ -29,24 +12,25 @@ function matchData(day = "today") {
     let html;
   const games = [];
     //day takes only these values
-   /* if (!matchDay.includes(day)) {
+    if (!matchDay.includes(day)) {
       throw new Error("day expects today | yesterday | tomorrow");
     }
-    const website = "https://yalla-shoot.com";
+    const website = process.env.YALLA_KORA;
+   
+    
     const url =
       day == "today"
-        ? website + "/live/index.php"
-        : `${website}/match/${day}_matches.php`; */
+        ? website + "today-matches1/"
+        : `${website}/matches-${day}`;  
 
     //making the request to the url
 
     try {
-   //   const response = await axios.get(url);
-     // html = response.data;
+   
      
 
      
-        const response = await fetch("https://stad.yalla-shoot.io/today-matches1/",requestOptions);
+        const response = await fetch(url,requestOptions);
     
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -63,7 +47,7 @@ function matchData(day = "today") {
       throw error;
       
     }
-  console.log("got the html fine !!!!!!!!!!!!!");
+  console.log(" got the html fine !!");
  
   
     const $ = cherio.load(html);
@@ -110,23 +94,26 @@ function matchData(day = "today") {
 
       //handeling time
      
-        let timePeriod = time.includes("مساء") ? "PM" : "AM";
-        const singleDigit = time.match(/\d/) + "";
+      //  let timePeriod = time.includes("PM") ? "PM" : "AM";
+      /*   const singleDigit = time.match(/\d/) + "";
         const timeDigits = time.match(/\d+/g);
-
+ */
         //transform to moroccan time
-        let hours = timeDigits[0] - 2;
+        /* let hours = timeDigits[0] - 2;
 
         if (hours < 1) {
           hours += 12;
           timePeriod = timePeriod == "PM" ? "AM" : "PM";
-        }
-        const minutes = timeDigits[1];
-        game.time = `${hours}:${minutes} ${timePeriod}`;
-        game.started = false;
+        } */
+
+      //  const houss= time.split(":")        const minutes = timeDigits[1];
+        game.time = parseTime(time);
+        game.started = notStarted ? false:true;
       
 
-      //handeling result
+      //handeling result if endded or started set time
+      game.result= game.started || ended ? result : undefined
+      
       
 
       //checking if game has ended or not
@@ -144,4 +131,4 @@ function matchData(day = "today") {
   };
 }
 
-module.exports = matchData;
+export default  matchData;
