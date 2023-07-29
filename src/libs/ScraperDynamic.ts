@@ -10,7 +10,7 @@ let puppeteer;
     let options = {};
   
     if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-      const chrome = await import("chrome-aws-lambda");
+       chrome = await import("chrome-aws-lambda");
       puppeteer = await import("puppeteer-core");
       
     } else {
@@ -20,8 +20,7 @@ let puppeteer;
     // The rest of your code goes here...
     // You can access 'puppeteer' and 'options' variables inside this IIFE.
     // Example:
-   /*  console.log(puppeteer);
-    console.log(options); */
+   /*  */
   
     // Continue with your code...
   })();
