@@ -30,6 +30,7 @@ export class ScraperDynamic extends Scraper {
     async get_urls_attached_to_btns() {
         if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
             console.log("************************* setting options for pupeteer !");
+            console.log("************************* loging chrome !", chrome);
             options = {
                 args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
                 defaultViewport: chrome.defaultViewport,
