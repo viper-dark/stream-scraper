@@ -1,19 +1,25 @@
 import { Scraper } from './Scraper.js';
 //import puppeteer from 'puppeteer'
 //zzzzzzzzzzzzzzzzzz
-let chrome;
+let chromium;
 let puppeteer;
-(async () => {
+/* (async () => {
+   
+   
+  
     if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-        console.log("*********************** aws lamdad imported :", process.env.AWS_LAMBDA_FUNCTION_VERSION);
-        chrome = await import("chrome-aws-lambda");
-        puppeteer = await import("puppeteer-core");
-    }
-    else {
+        console.log("*********************** aws lamdad imported :",process.env.AWS_LAMBDA_FUNCTION_VERSION);
+        
+        chromium  = await import("@sparticuz/chromium");
+      puppeteer = await import("puppeteer-core");
+      
+    } else {
         console.log("*************************** regural pupeteer imported !");
-        puppeteer = await import("puppeteer");
+        
+      puppeteer = await import("puppeteer");
     }
-})();
+  
+  })(); */
 /* if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
     chrome = require("chrome-aws-lambda");
     puppeteer = require("puppeteer-core");
@@ -28,13 +34,25 @@ export class ScraperDynamic extends Scraper {
         super(first_team, second_team);
     }
     async get_urls_attached_to_btns() {
+        (async () => {
+            if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+                console.log("*********************** aws lamdad imported :", process.env.AWS_LAMBDA_FUNCTION_VERSION);
+                chromium = await import("@sparticuz/chromium");
+                puppeteer = await import("puppeteer-core");
+            }
+            else {
+                console.log("*************************** regural pupeteer imported !");
+                puppeteer = await import("puppeteer");
+            }
+        })();
         if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
             console.log("************************* setting options for pupeteer !");
-            console.log("************************* loging chrome !", chrome);
+            console.log("************************* loging chrome !", chromium);
+            // console.log("************************* loging pepeteer  !",puppeteer );
             options = {
-                args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
-                defaultViewport: chrome.defaultViewport,
-                executablePath: await chrome.executablePath,
+                args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+                defaultViewport: chromium.defaultViewport,
+                executablePath: await chromium.executablePath,
                 headless: true,
                 ignoreHTTPSErrors: true,
             };
