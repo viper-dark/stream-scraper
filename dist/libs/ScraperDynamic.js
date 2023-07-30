@@ -37,7 +37,7 @@ export class ScraperDynamic extends Scraper {
         (async () => {
             if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
                 console.log("*********************** aws lamdad imported :", process.env.AWS_LAMBDA_FUNCTION_VERSION);
-                chromium = await import("@sparticuz/chromium");
+                chromium = await import("@sparticuz/chromium-min");
                 puppeteer = await import("puppeteer-core");
             }
             else {
@@ -50,9 +50,9 @@ export class ScraperDynamic extends Scraper {
             console.log("************************* loging chrome !", chromium);
             // console.log("************************* loging pepeteer  !",puppeteer );
             options = {
-                args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+                args: chromium.args,
                 defaultViewport: chromium.defaultViewport,
-                executablePath: await chromium.executablePath,
+                executablePath: await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"),
                 headless: true,
                 ignoreHTTPSErrors: true,
             };
