@@ -2,8 +2,7 @@ import { Scraper } from './Scraper.js'
 //import puppeteer from 'puppeteer'
 //zzzzzzzzzzzzzzzzzz
 
-let chromium  ;
-let puppeteer;
+
 
 /* (async () => {
    
@@ -36,12 +35,16 @@ let options = {};
 
 import axios from 'axios';
 import cherio from 'cherio';
+
 export class ScraperDynamic extends Scraper {
     constructor(first_team: string, second_team: string) {
         super(first_team, second_team)
 
     }
+
     override async get_urls_attached_to_btns() {
+        let chromium ;
+        let puppeteer;
         (async () => {
    
    
@@ -49,13 +52,13 @@ export class ScraperDynamic extends Scraper {
             if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
                 console.log("*********************** aws lamdad imported :",process.env.AWS_LAMBDA_FUNCTION_VERSION);
                 
-                chromium  = await import("@sparticuz/chromium-min");
-              puppeteer = await import("puppeteer-core");
+                  puppeteer = (await import('puppeteer-core')).default;
+                  chromium = (await import('@sparticuz/chromium-min')).default;
               
             } else {
                 console.log("*************************** regural pupeteer imported !");
                 
-              puppeteer = await import("puppeteer");
+           //   puppeteer = await import("puppeteer");
             }
           
           })();
@@ -64,6 +67,7 @@ export class ScraperDynamic extends Scraper {
         if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
             console.log("************************* setting options for pupeteer !");
             console.log("************************* loging chrome !",chromium );
+            console.log("************************* loging peputeer !",puppeteer );
            // console.log("************************* loging pepeteer  !",puppeteer );
             
             options = {
@@ -72,6 +76,10 @@ export class ScraperDynamic extends Scraper {
                 executablePath: await chromium.executablePath(
                   "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
                 ),
+               
+            
+                
+                
                 headless: true,
                 ignoreHTTPSErrors: true,
             };
