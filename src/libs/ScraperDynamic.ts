@@ -2,7 +2,7 @@ import { Scraper } from './Scraper.js'
 //import puppeteer from 'puppeteer'
 //zzzzzzzzzzzzzzzzzz
 
-let chrome = {};
+let chrome ;
 let puppeteer;
 
 (async () => {
@@ -10,19 +10,17 @@ let puppeteer;
    
   
     if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+        console.log("*********************** aws lamdad imported :",process.env.AWS_LAMBDA_FUNCTION_VERSION);
+        
        chrome = await import("chrome-aws-lambda");
       puppeteer = await import("puppeteer-core");
       
     } else {
+        console.log("*************************** regural pupeteer imported !");
+        
       puppeteer = await import("puppeteer");
     }
   
-    // The rest of your code goes here...
-    // You can access 'puppeteer' and 'options' variables inside this IIFE.
-    // Example:
-   /*  */
-  
-    // Continue with your code...
   })();
 /* if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
     chrome = require("chrome-aws-lambda");
@@ -47,6 +45,8 @@ export class ScraperDynamic extends Scraper {
 
 
         if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+            console.log("************************* setting options for pupeteer !");
+            
             options = {
                 args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
                 defaultViewport: chrome.defaultViewport,
