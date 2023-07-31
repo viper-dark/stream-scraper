@@ -34,49 +34,50 @@ export class ScraperDynamic extends Scraper {
     async get_urls_attached_to_btns() {
         let chromium;
         let puppeteer;
-        (async () => {
-            if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-                console.log("*********************** aws lamdad imported :", process.env.AWS_LAMBDA_FUNCTION_VERSION);
-                puppeteer = (await import('puppeteer-core')).default;
-                chromium = (await import('@sparticuz/chromium-min')).default;
-            }
-            else {
-                console.log("*************************** regural pupeteer imported !");
-                //   puppeteer = await import("puppeteer");
-            }
-        })();
+        //  (async () => {
         if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-            console.log("************************* setting options for pupeteer !");
-            console.log("************************* loging chrome !", chromium);
-            console.log("************************* loging peputeer !", puppeteer);
-            // console.log("************************* loging pepeteer  !",puppeteer );
-            options = {
-                args: chromium.args,
-                defaultViewport: chromium.defaultViewport,
-                executablePath: await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"),
-                headless: true,
-                ignoreHTTPSErrors: true,
-            };
+            console.log("*********************** aws lamdad imported :", process.env.AWS_LAMBDA_FUNCTION_VERSION);
+            puppeteer = (await import('puppeteer-core')).default;
+            chromium = (await import('@sparticuz/chromium-min')).default;
+            /*  } else {
+                  console.log("*************************** regural pupeteer imported !");
+                  
+             //   puppeteer = await import("puppeteer");
+              }*/
+            // })();
+            if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+                console.log("************************* setting options for pupeteer !");
+                console.log("************************* loging chrome !", chromium);
+                console.log("************************* loging peputeer !", puppeteer);
+                // console.log("************************* loging pepeteer  !",puppeteer );
+                options = {
+                    args: chromium.args,
+                    defaultViewport: chromium.defaultViewport,
+                    executablePath: await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"),
+                    headless: true,
+                    ignoreHTTPSErrors: true,
+                };
+            }
+            const browser = await puppeteer.launch(options);
+            // const browser = await puppeteer.launch({ headless: true });
+            const page = await browser.newPage();
+            await page.goto(this.match_link);
+            //waiting t=for the frame to load
+            const frame = await page.waitForSelector("#iframe");
+            //getting the content frame  
+            const contentFrame = await frame.contentFrame();
+            //getting the btns href attributes
+            const anchorsHrefs = await (contentFrame === null || contentFrame === void 0 ? void 0 : contentFrame.$$eval("body > ul > li > a", el => el.map(el => { return { quality: el.textContent, url: el.getAttribute("href") }; })));
+            if (anchorsHrefs) {
+                console.log("a/btns  tags hrefs attrs found: \n");
+                this.iframe_urls.push(...anchorsHrefs.map(e => { e.referer = this.match_link; return e; }));
+                console.log(this.iframe_urls);
+            }
+            else
+                console.log("no btns found !");
+            console.timeLog("browser time");
+            browser.close();
         }
-        const browser = await puppeteer.launch(options);
-        // const browser = await puppeteer.launch({ headless: true });
-        const page = await browser.newPage();
-        await page.goto(this.match_link);
-        //waiting t=for the frame to load
-        const frame = await page.waitForSelector("#iframe");
-        //getting the content frame  
-        const contentFrame = await frame.contentFrame();
-        //getting the btns href attributes
-        const anchorsHrefs = await (contentFrame === null || contentFrame === void 0 ? void 0 : contentFrame.$$eval("body > ul > li > a", el => el.map(el => { return { quality: el.textContent, url: el.getAttribute("href") }; })));
-        if (anchorsHrefs) {
-            console.log("a/btns  tags hrefs attrs found: \n");
-            this.iframe_urls.push(...anchorsHrefs.map(e => { e.referer = this.match_link; return e; }));
-            console.log(this.iframe_urls);
-        }
-        else
-            console.log("no btns found !");
-        console.timeLog("browser time");
-        browser.close();
         return 0;
     }
     async get_m3u8_urls() {

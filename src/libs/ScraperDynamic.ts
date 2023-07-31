@@ -45,7 +45,7 @@ export class ScraperDynamic extends Scraper {
     override async get_urls_attached_to_btns() {
         let chromium ;
         let puppeteer;
-        (async () => {
+     //  (async () => {
    
    
   
@@ -55,13 +55,13 @@ export class ScraperDynamic extends Scraper {
                   puppeteer = (await import('puppeteer-core')).default;
                   chromium = (await import('@sparticuz/chromium-min')).default;
               
-            } else {
+          /*  } else {
                 console.log("*************************** regural pupeteer imported !");
                 
            //   puppeteer = await import("puppeteer");
-            }
+            }*/
           
-          })();
+         // })();
 
 
         if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
@@ -110,7 +110,7 @@ export class ScraperDynamic extends Scraper {
         console.timeLog("browser time");
         browser.close()
 
-
+    }
 
         return 0
 
