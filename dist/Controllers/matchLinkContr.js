@@ -1,5 +1,5 @@
-import { get_server } from "../server1";
-import getMatchLink from "../scrapeLink";
+import { get_server } from "../server1.js";
+import getMatchLink from "../scrapeLink.js";
 import cache from '../index.js';
 export const matchLinkContr = async (req, res) => {
     const teams = req.query.teams.split(",");
