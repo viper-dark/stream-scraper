@@ -30,5 +30,5 @@ export const parseTime = (time) => {
     const event = new Date();
     event.setHours(hours, minutes, 0);
     let after = date.addMilliseconds(event, -TWO_HOURS);
-    return date.format(after, 'HH:mm A');
+    return date.format(after, 'hh:mm A');
 };
