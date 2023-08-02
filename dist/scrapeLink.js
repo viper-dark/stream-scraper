@@ -122,7 +122,7 @@ async function getMatchLink(teams) {
         quality: iframeScripts[i].quality,
       });
     }*/
-    hlsData = [];
+    const hlsData = [];
     const iframeUrls = await getIframeLink(matchLink);
     for (let index = 0; index < iframeUrls.length; index++) {
         const element = iframeUrls[index];
@@ -137,7 +137,7 @@ async function getMatchLink(teams) {
 }
 async function getIframeLink(matchLink) {
     const { data: linkHtml } = await axios.get(matchLink);
-    $ = cherio.load(linkHtml);
+    const $ = cherio.load(linkHtml);
     const iframeUrls = [];
     $("#tabs > button").each(function (i, elem) {
         const quality = $(this).text().trim();

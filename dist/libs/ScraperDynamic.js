@@ -1,29 +1,4 @@
 import { Scraper } from './Scraper.js';
-//import puppeteer from 'puppeteer'
-//zzzzzzzzzzzzzzzzzz
-/* (async () => {
-   
-   
-  
-    if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-        console.log("*********************** aws lamdad imported :",process.env.AWS_LAMBDA_FUNCTION_VERSION);
-        
-        chromium  = await import("@sparticuz/chromium");
-      puppeteer = await import("puppeteer-core");
-      
-    } else {
-        console.log("*************************** regural pupeteer imported !");
-        
-      puppeteer = await import("puppeteer");
-    }
-  
-  })(); */
-/* if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-    chrome = require("chrome-aws-lambda");
-    puppeteer = require("puppeteer-core");
-} else {
-    puppeteer = require("puppeteer");
-} */
 let options = {};
 import axios from 'axios';
 import cherio from 'cherio';
@@ -47,8 +22,6 @@ export class ScraperDynamic extends Scraper {
             // })();
             if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
                 console.log("************************* setting options for pupeteer !");
-                console.log("************************* loging chrome !", chromium);
-                console.log("************************* loging peputeer !", puppeteer);
                 // console.log("************************* loging pepeteer  !",puppeteer );
                 options = {
                     args: chromium.args,

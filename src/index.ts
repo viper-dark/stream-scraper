@@ -19,6 +19,11 @@ app.get("/tomorrow", scrape("tomorrow"));
 app.get("/matchLink", async (req, res) => {
   const teams = req.query.teams.split(",");
   const server = req.query.server;
+// redirecting the request to the render server
+
+  return res.redirect("https://scraper-pacx.onrender.com"+req.originalUrl)
+  
+  
   let linkData;
   //chosing the server
   try {
