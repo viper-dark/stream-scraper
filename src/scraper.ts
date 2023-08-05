@@ -2,7 +2,7 @@
 import axios from "axios";
 import cherio from "cherio";
 import fetch from "node-fetch";
-import { log } from "console";
+ 
 import {requestOptions,parseTime} from "./libs/utils.js";
 
 
