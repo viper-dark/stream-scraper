@@ -13,7 +13,7 @@ function matchData(day = "today") {
         }
         const data = cache.get(day);
         if (data) {
-            return res.status(200).json({ data });
+            return res.status(304).json({ games: data });
         }
         const website = process.env.YALLA_KORA;
         const url = day == "today"
