@@ -1,7 +1,6 @@
 import express from "express";
 import scrape from "./scraper.js";
 import morgan from "morgan"
-import path from "path";
 import dotenv from "dotenv";
 import NodeCache from 'node-cache'
 const app = express();

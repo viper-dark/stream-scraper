@@ -4,7 +4,6 @@ import cherio from "cherio";
 import fetch from "node-fetch";
 import { log } from "console";
 import {requestOptions,parseTime} from "./libs/utils.js";
-import {cache} from './index.js'
 
 
 function matchData(day = "today") {
@@ -16,14 +15,7 @@ function matchData(day = "today") {
     if (!matchDay.includes(day)) {
       throw new Error("day expects today | yesterday | tomorrow");
     }
-    const data =cache.get( day )
-    if(data)
-    {
-     return res.status(200).json({data})    
-    
-      
-       
-    }
+  
     const website = process.env.YALLA_KORA;
    
     
@@ -134,7 +126,7 @@ function matchData(day = "today") {
       
     });
 
-    cache.set(day,games,60)
+   
 
     return res.status(200).json({
       games,
