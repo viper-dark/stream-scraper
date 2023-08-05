@@ -37,28 +37,38 @@ export class ScraperDynamic extends Scraper {
         //  (async () => {
         if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
             console.log("*********************** aws lamdad imported :", process.env.AWS_LAMBDA_FUNCTION_VERSION);
-            puppeteer = (await import('puppeteer-core')).default;
-            chromium = (await import('@sparticuz/chromium-min')).default;
+            puppeteer = (await import('puppeteer')).default;
+            //   chromium = (await import('@sparticuz/chromium-min')).default;
             /*  } else {
                   console.log("*************************** regural pupeteer imported !");
                   
              //   puppeteer = await import("puppeteer");
               }*/
             // })();
-            if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-                console.log("************************* setting options for pupeteer !");
-                console.log("************************* loging chrome !", chromium);
-                console.log("************************* loging peputeer !", puppeteer);
-                // console.log("************************* loging pepeteer  !",puppeteer );
-                options = {
-                    args: chromium.args,
-                    defaultViewport: chromium.defaultViewport,
-                    executablePath: await chromium.executablePath("https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"),
-                    headless: true,
-                    ignoreHTTPSErrors: true,
-                };
-            }
-            const browser = await puppeteer.launch(options);
+            /*   if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+                  console.log("************************* setting options for pupeteer !");
+                  console.log("************************* loging chrome !",chromium );
+                  console.log("************************* loging peputeer !",puppeteer );
+                 // console.log("************************* loging pepeteer  !",puppeteer );
+                  
+                  options = {
+                      args: chromium.args,
+                      defaultViewport: chromium.defaultViewport,
+                      executablePath: await chromium.executablePath(
+                        "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
+                      ),
+                     
+                  
+                      
+                      
+                      headless: true,
+                      ignoreHTTPSErrors: true,
+                  };
+                  console.log("****************option set ");
+                  
+              } */
+            console.time("browser runtime");
+            const browser = await puppeteer.launch();
             // const browser = await puppeteer.launch({ headless: true });
             const page = await browser.newPage();
             await page.goto(this.match_link);
@@ -75,7 +85,7 @@ export class ScraperDynamic extends Scraper {
             }
             else
                 console.log("no btns found !");
-            console.timeLog("browser time");
+            console.timeEnd("browser runtime");
             browser.close();
         }
         return 0;
