@@ -5,6 +5,11 @@ import dotenv from "dotenv";
 import NodeCache from 'node-cache'
 import cors from "cors"
 const app = express();
+(()=>{
+  //  let log = console.log
+    const context = new Date().toISOString()
+    console.log = console.log.bind(console,context)
+  })()
 app.use(cors())
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" :response-time ms'))
 
