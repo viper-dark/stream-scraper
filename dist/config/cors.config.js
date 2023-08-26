@@ -4,7 +4,10 @@ import APIError from '../api/utils/APIError.js';
 const options = {
     origin: (origin, callback) => {
         // In dev, allow these origins to access the API
-        const whiteList = ['localhost', 'chrome-extension'];
+        let whiteList = ['localhost', 'chrome-extension'];
+        if (process.env.NODE_ENV == "production") {
+            whiteList = ["scraper-pacx.onrender"];
+        }
         const index = whiteList.findIndex((aWhiteListedOrigin) => origin.includes(aWhiteListedOrigin));
         if (!origin || index !== -1) {
             callback(null, true);

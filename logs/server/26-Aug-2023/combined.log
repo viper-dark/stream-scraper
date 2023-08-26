@@ -38,3 +38,5 @@
 2023-08-26 15:50:12 info [index.js]: server listening on http://localhost:3001 [env, port] = [development, 3001]
 2023-08-26 15:52:00 info [index.js]: server listening on http://localhost:3001 [env, port] = [development, 3001]
 2023-08-26 15:53:58 info [index.js]: server listening on http://localhost:3001 [env, port] = [development, 3001]
+2023-08-26 16:15:16 info [index.js]: server listening on http://localhost:3001 [env, port] = [development, 3001]
+2023-08-26 16:15:39 info [index.js]: server listening on http://localhost:3001 [env, port] = [production, 3001]
