@@ -61,7 +61,11 @@ export class ScraperDynamic extends Scraper {
                 //when a none coded regular m3u8 link is found
                 if (nonCodedLink) {
                     console.log("non coded url found:", nonCodedLink);
-                    m3u8_url = nonCodedLink;
+                    //replace server variable 
+                    const servs = ["live-cdn", "live-cdn2"];
+                    const serv = servs[Math.floor(Math.random() * servs.length)];
+                    const regex = /'([^']+)'/;
+                    m3u8_url = nonCodedLink.replace(regex, serv);
                     return false;
                 }
                 //when finding a link in coded format

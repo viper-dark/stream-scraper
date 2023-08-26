@@ -11,43 +11,43 @@ export class ScraperDynamic extends Scraper {
     }
 
     override async get_urls_attached_to_btns() {
-     
+
         let puppeteer;
-     //  (async () => {
-   
-   
-  
-            if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-                console.log("*********************** aws lamdad imported :",process.env.AWS_LAMBDA_FUNCTION_VERSION);
-                
-                  puppeteer = (await import('puppeteer')).default;
-            
-        console.time("browser runtime")
-        const browser = await puppeteer.launch()
-        const page = await browser.newPage();
+        //  (async () => {
 
-        await page.goto(this.match_link);
 
-        //waiting t=for the frame to load
-        const frame = await page.waitForSelector("#iframe");
-        //getting the content frame  
-        const contentFrame = await frame.contentFrame();
 
-        //getting the btns href attributes
-        const anchorsHrefs = await contentFrame?.$$eval("body > ul > li > a", el => el.map(el => { return { quality: el.textContent, url: el.getAttribute("href") } }))
-        if (anchorsHrefs) {
-            console.log("a/btns  tags hrefs attrs found: \n");
+        if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+            console.log("*********************** aws lamdad imported :", process.env.AWS_LAMBDA_FUNCTION_VERSION);
 
-            this.iframe_urls.push(...anchorsHrefs.map(e => { e.referer = this.match_link; return e }))
-            console.log(this.iframe_urls);
+            puppeteer = (await import('puppeteer')).default;
 
-        } else
-            console.log("no btns found !");
+            console.time("browser runtime")
+            const browser = await puppeteer.launch()
+            const page = await browser.newPage();
 
-        console.timeEnd("browser runtime",);
-        browser.close()
+            await page.goto(this.match_link);
 
-    }
+            //waiting t=for the frame to load
+            const frame = await page.waitForSelector("#iframe");
+            //getting the content frame  
+            const contentFrame = await frame.contentFrame();
+
+            //getting the btns href attributes
+            const anchorsHrefs = await contentFrame?.$$eval("body > ul > li > a", el => el.map(el => { return { quality: el.textContent, url: el.getAttribute("href") } }))
+            if (anchorsHrefs) {
+                console.log("a/btns  tags hrefs attrs found: \n");
+
+                this.iframe_urls.push(...anchorsHrefs.map(e => { e.referer = this.match_link; return e }))
+                console.log(this.iframe_urls);
+
+            } else
+                console.log("no btns found !");
+
+            console.timeEnd("browser runtime",);
+            browser.close()
+
+        }
 
         return 0
 
@@ -72,7 +72,7 @@ export class ScraperDynamic extends Scraper {
 
             //itearating over script tags to match the m3u8 source
             $("script").each((i, el) => {
-               
+
                 const script = $(el).html();
                 //regex to match the m3u8 in script string
                 const regex1 = /https?:\/\/[^\s"]+\.m3u8\b/g;
@@ -83,11 +83,15 @@ export class ScraperDynamic extends Scraper {
 
                 const nonCodedLink = script.match(regex1)?.[0]
                 const codedLink = script.match(regex2)?.[1]
-                console.log("script number "+i+" is being checked in iframe number "+index);
+                console.log("script number " + i + " is being checked in iframe number " + index);
                 //when a none coded regular m3u8 link is found
                 if (nonCodedLink) {
-                    console.log("non coded url found:",nonCodedLink);
-                    m3u8_url = nonCodedLink
+                    console.log("non coded url found:", nonCodedLink);
+                    //replace server variable 
+                    const servs = ["live-cdn", "live-cdn2"];
+                    const serv = servs[Math.floor(Math.random() * servs.length)];
+                    const regex = /'([^']+)'/;
+                    m3u8_url = nonCodedLink.replace(regex, serv)
 
                     return false
 
@@ -95,10 +99,10 @@ export class ScraperDynamic extends Scraper {
                 //when finding a link in coded format
                 if (codedLink) {
                     //decoding the link
-                    
+
                     let buff = Buffer.from(codedLink, 'base64');
                     m3u8_url = buff.toString('utf-8');
-                    console.log("coded url found :",m3u8_url)
+                    console.log("coded url found :", m3u8_url)
                     return false
                 }
 

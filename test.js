@@ -1,11 +1,6 @@
-const regex2 = /AlbaPlayerControl\('([^']+)'\)/
-const regex = /AlbaPlayerControl\('([^']+)','([^']+)'\);/;
-const script ="AlbaPlayerControl('aHR0cHM6Ly9saXZlLWNkbi5uaW5lY2RuLm9ubGluZS9obHMvYm4zXzcyMC5tM3U4','cloudinary');"
-const matches = script.match(regex)
-//const capturedValues = matches.map(match => match.slice(1, -1));
-console.log("match",typeof matches)
-console.log("match",matches[0])
-console.log("match",matches.input)
-
-//console.log(codedLink)
-
+var servs = ["live-cdn","live-cdn2"];
+var serv = servs[Math.floor(Math.random() * servs.length)];
+const regex = /'([^']+)'/;
+const str = "https://'+serv+'.ninecdn.online/hls/bn2_360.m3u8"
+const match =str.replace(regex,"coco")
+console.log(match)
