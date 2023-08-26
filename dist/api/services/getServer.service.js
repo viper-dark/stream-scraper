@@ -29,5 +29,6 @@ export async function get_server(first_team, second_team) {
     if (!data.length) {
         throw new Error("ERROR trying to fetch data for server 1");
     }
+    console.log(`congratulations ${data.length} has been found for match ${first_team} vs ${second_team}`);
     return data;
 }
