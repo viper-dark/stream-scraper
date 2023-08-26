@@ -17,10 +17,10 @@ app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:htt
 //app.use(morgan(logs));
 // This middleware take care of the origin when the origin is undefined.
 // origin is undefined when request is local
-/* app.use((req, _, next) => {
+app.use((req, _, next) => {
     req.headers.origin = req.headers.origin || req.headers.host;
     next();
-}); */
+});
 // CORS configuration
 app.use(cors());
 // parse body params and attache them to req.body
