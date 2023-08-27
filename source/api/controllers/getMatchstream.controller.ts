@@ -4,14 +4,7 @@ import getMatchLink from "../services/getMatchLink.service.js";
 const get_match_stream =  async (req, res) => {
     const teams = req.query.teams.split(",");
     const server = req.query.server;
-    /*  const data = cache.get(teams+server)
-    if (data)
-    {
-        console.log("******************** cache found *************************");
-       return res.status(200).json({ m3u8Data: data });
-
-        
-    } */
+   
     let linkData;
     //chosing the server
     try {
@@ -21,7 +14,8 @@ const get_match_stream =  async (req, res) => {
   
           break;
         case "server2":
-          linkData = await getMatchLink(teams.join(","));
+          return res.status(404).send("NOT IMPLEMENTED YET")
+          //linkData = await getMatchLink(teams.join(","));
   
         default:
           break;
