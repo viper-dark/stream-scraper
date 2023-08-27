@@ -18,7 +18,7 @@ router.route('/').get(cacheMiddleware(100),get_match_data());
 // protected route
 router.route('/yesterday').get( cacheMiddleware(100),get_match_data("yesterday"));
 router.route('/tomorrow').get(cacheMiddleware(100),get_match_data("tomorrow"));
-router.route('/matchLink').get(cacheMiddleware(60*5),get_match_stream);
+router.route('/matchLink').get(cacheMiddleware(60*10),get_match_stream);
 
 export default router;
 
