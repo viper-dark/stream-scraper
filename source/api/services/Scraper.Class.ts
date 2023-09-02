@@ -70,7 +70,7 @@ throw error
     
 
     //const divContainers = $("div > div > div.match-event");
-    const divContainers = $("#recent-toda > div")
+    const divContainers = $("#HTML2 > div.widget-content > div")
 
  
     
@@ -90,7 +90,7 @@ throw error
         teamsSelected.includes(second_team)
       ) {
         //  matchLink = $("a#match-live", elem).attr("href");
-        match_link = $("#match-live", elem).attr("href");
+        match_link = $("a", elem).attr("href");
 
         return false;
       }

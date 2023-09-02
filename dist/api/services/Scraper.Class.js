@@ -52,7 +52,7 @@ export class Scraper {
         // fs.writeFileSync("coco.html",homeHtml)
         console.log("******************");
         //const divContainers = $("div > div > div.match-event");
-        const divContainers = $("#recent-toda > div");
+        const divContainers = $("#HTML2 > div.widget-content > div");
         console.log("didv container : " + divContainers.length);
         //iterating over the divs
         divContainers.each(function (i, elem) {
@@ -64,7 +64,7 @@ export class Scraper {
             if (teamsSelected.includes(first_team) ||
                 teamsSelected.includes(second_team)) {
                 //  matchLink = $("a#match-live", elem).attr("href");
-                match_link = $("#match-live", elem).attr("href");
+                match_link = $("a", elem).attr("href");
                 return false;
             }
         });
