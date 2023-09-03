@@ -5,6 +5,8 @@ import cors from './cors.config.js';
 import routes from '../api/routes/v1/index.js';
 import error from '../api/middlewares/error.js';
 import constants from '../constants/index.js';
+import cron from "node-cron";
+import cron_job from '../api/services/cronJob.js';
 const { logs } = constants;
 /**
  * Express instance
@@ -46,4 +48,6 @@ app.use(error.notFound);
 app.use(error.handler);
 // temporary files created using tmp will be deleted on UncaughtException
 //tmp.setGracefulCleanup();
+//cron job to make automatic requests to the server
+cron.schedule("*/10 * * * *", cron_job);
 export default app;

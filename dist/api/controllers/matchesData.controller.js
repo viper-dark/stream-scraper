@@ -54,7 +54,9 @@ function get_match_data(day = "today") {
             const result = $("#result", elem).text();
             const notStarted = $(" a > div.match-center > div > div.not-start", elem).text();
             const ended = $(" a > div.match-center > div > div.end", elem).text();
-            game.time = parseTime(time);
+            const timeParsed = parseTime(time);
+            game.time = timeParsed.time;
+            game.timeinMili = timeParsed.timeinMili;
             game.started = notStarted ? false : true;
             //handeling result if endded or started set time
             game.result = game.started || ended ? result : undefined;

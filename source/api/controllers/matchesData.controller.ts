@@ -96,7 +96,9 @@ function get_match_data(day = "today") {
       
 
     
-        game.time = parseTime(time);
+      const timeParsed = parseTime(time);
+        game.time = timeParsed.time
+        game.timeinMili = timeParsed.timeinMili
         game.started = notStarted ? false:true;
       
 

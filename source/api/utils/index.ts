@@ -18,7 +18,7 @@ const headers = {
    *parseTime
    * parses provided time string by subtracting 2 hours 
    */
-export const parseTime = (time :string):string =>{
+export const parseTime = (time :string):{time:String,timeinMili:Number} =>{
 
 
   const TWO_HOURS =(60*2) * 60 * 1000
@@ -44,7 +44,7 @@ export const parseTime = (time :string):string =>{
   let after =date.addMilliseconds(event,-TWO_HOURS)
    
   
-  return date.format(after, 'hh:mm A'); 
+  return {time :date.format(after, 'hh:mm A'),timeinMili:after.getTime()} 
   
   }
   
