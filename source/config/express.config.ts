@@ -72,6 +72,6 @@ app.use(error.handler);
 //tmp.setGracefulCleanup();
 
 //cron job to make automatic requests to the server
-cron.schedule("*/10 * * * *", cron_job)
+cron.schedule("*/5 * * * *", cron_job)
 
 export default app;
