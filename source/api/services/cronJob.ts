@@ -8,7 +8,7 @@ async function cron_job(): Promise<void> {
 
     try {
         // Make an HTTP GET request to a route within your own server
-        const response = await axios.get('http://localhost:10000/');
+        const response = await axios.get(process.env.LOCAL_HOST);
 
         // Handle the response here
         const data = response.data;
@@ -21,7 +21,7 @@ async function cron_job(): Promise<void> {
                 console.log("id", index)
                 console.log("game that needs to be cached ", game.firstTeam, game.secondTeam)
                 try {
-                    const { data } = await axios.get(`http://localhost:3001/matchLink?teams=${game.firstTeam},${game.secondTeam}&server=server1`)
+                    const { data } = await axios.get(`${process.env.LOCAL_HOST}matchLink?teams=${game.firstTeam},${game.secondTeam}&server=server1`)
                 } catch (error) {
                     console.log("resquest failed for id =", index)
                     continue;
