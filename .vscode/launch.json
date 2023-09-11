@@ -6,6 +6,16 @@
   "configurations": [
     
     {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug TypeScript",
+      "program": "${workspaceFolder}/source/index.ts",
+      "sourceMaps": true,
+      "preLaunchTask": "npm: build",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+    },
+    
+    {
       "name": "Launch Program",
       "program": "${workspaceFolder}/test.js",
       "request": "launch",

@@ -60,3 +60,4 @@ export const notFound = (req, res) => {
     return handler(err, req, res);
 };
 export default { handler, notFound, converter };
+//# sourceMappingURL=error.js.map

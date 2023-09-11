@@ -32,3 +32,4 @@ export async function get_server(first_team, second_team) {
     console.log(`congratulations ${data.length} has been found for match ${first_team} vs ${second_team}`);
     return data;
 }
+//# sourceMappingURL=getServer.service.js.map

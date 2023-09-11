@@ -35,3 +35,4 @@ const get_match_stream = async (req, res) => {
     res.status(200).json({ m3u8Data: linkData });
 };
 export default get_match_stream;
+//# sourceMappingURL=getMatchstream.controller.js.map

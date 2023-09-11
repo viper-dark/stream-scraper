@@ -32,3 +32,4 @@ export const parseTime = (time) => {
     let after = date.addMilliseconds(event, -TWO_HOURS);
     return { time: date.format(after, 'hh:mm A'), timeinMili: after.getTime() };
 };
+//# sourceMappingURL=index.js.map

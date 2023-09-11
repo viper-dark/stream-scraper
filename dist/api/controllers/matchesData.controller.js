@@ -70,3 +70,4 @@ function get_match_data(day = "today") {
     };
 }
 export default get_match_data;
+//# sourceMappingURL=matchesData.controller.js.map

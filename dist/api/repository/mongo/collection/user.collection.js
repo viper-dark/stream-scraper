@@ -7,3 +7,4 @@ const someQuery = () => new Promise((resolve) => resolve(true));
 exports.queries = {
     someQuery,
 };
+//# sourceMappingURL=user.collection.js.map

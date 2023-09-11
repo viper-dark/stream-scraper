@@ -19,3 +19,4 @@ module.exports = (req, res, next) => {
     }
     return res.status(httpStatus.UNAUTHORIZED).json(responses.notAuthenticated());
 };
+//# sourceMappingURL=authenticated.js.map

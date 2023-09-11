@@ -30,3 +30,4 @@ const options = (prefix) => ({
 });
 const logger = (prefix) => createLogger(options(prefix));
 export default logger;
+//# sourceMappingURL=logger.js.map

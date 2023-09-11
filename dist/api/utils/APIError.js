@@ -36,3 +36,4 @@ export default class APIError extends ExtendableError {
         });
     }
 }
+//# sourceMappingURL=APIError.js.map

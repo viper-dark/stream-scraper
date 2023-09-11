@@ -1,7 +1,6 @@
-import NodeCache from 'node-cache';
-const cache = new NodeCache();
+import { cache } from "../../config/express.config.js";
 export const cacheMiddleware = (duration) => (req, res, next) => {
-    const key = req.originalUrl;
+    const key = decodeURIComponent(req.originalUrl);
     const cachedResponse = cache.get(key);
     if (cachedResponse) {
         console.log(`cache hit for key = ${key}`);
@@ -17,3 +16,4 @@ export const cacheMiddleware = (duration) => (req, res, next) => {
     }
     next();
 };
+//# sourceMappingURL=cache.js.map

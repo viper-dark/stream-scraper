@@ -24,3 +24,4 @@ const options = {
 };
 const corsMiddleware = () => cors(options);
 export default corsMiddleware;
+//# sourceMappingURL=cors.config.js.map

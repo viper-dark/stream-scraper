@@ -25,3 +25,4 @@ const options = {
 };
 const sessionMiddleware = () => expressSession(options);
 export default sessionMiddleware;
+//# sourceMappingURL=session.config.js.map

@@ -28,3 +28,4 @@ const logger = () => {
     return loggerToReturn;
 };
 module.exports = logger;
+//# sourceMappingURL=client-logger.js.map

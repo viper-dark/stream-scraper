@@ -18,3 +18,4 @@ const connect = () => new Promise((resolve, reject) => {
 module.exports = {
     ...userCollection.queries,
 };
+//# sourceMappingURL=mongo.repository.js.map

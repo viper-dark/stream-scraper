@@ -13,8 +13,10 @@ import routes from '../api/routes/v1/index.js';
 import error from '../api/middlewares/error.js';
 import constants from '../constants/index.js';
 import cron from "node-cron"
-import cron_job from '../api/services/cronJob.js';
+import { cron_job_cache_stream, cron_job_match_data} from '../api/services/cronJob.js';
+import NodeCache from 'node-cache'
 const {logs}=constants
+export const cache = new NodeCache()
 /**
  * Express instance
  * @public
@@ -36,6 +38,7 @@ app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:htt
 }); 
 
 // CORS configuration
+
 app.use(cors());
 
 // parse body params and attache them to req.body
@@ -72,6 +75,12 @@ app.use(error.handler);
 //tmp.setGracefulCleanup();
 
 //cron job to make automatic requests to the server
-cron.schedule("*/10 * * * *", cron_job)
+cron_job_match_data().then(()=>
+{
+	cron_job_cache_stream().then(()=>{cron.schedule("0 * * * *", cron_job_match_data)
+
+	cron.schedule("*/10 * * * *", cron_job_cache_stream)
+})
+})
 
 export default app;

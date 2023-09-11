@@ -92,3 +92,4 @@ export class ScraperDynamic extends Scraper {
         return true;
     }
 }
+//# sourceMappingURL=ScraperDynamic.Class.js.map

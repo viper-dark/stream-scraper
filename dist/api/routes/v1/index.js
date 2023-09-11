@@ -15,3 +15,4 @@ router.get('/status', (req, res) => {
 });
 router.use('/', userRoutes);
 export default router;
+//# sourceMappingURL=index.js.map

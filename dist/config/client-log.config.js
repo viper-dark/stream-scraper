@@ -13,3 +13,4 @@ router.use((req, res) => {
     res.json({ message: 'OK' });
 });
 module.exports = router;
+//# sourceMappingURL=client-log.config.js.map

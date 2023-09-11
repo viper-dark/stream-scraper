@@ -1,8 +1,7 @@
-import NodeCache from 'node-cache'
-const cache = new NodeCache()
+import { cache } from "../../config/express.config.js"
 export const cacheMiddleware =(duration : number)=> (req,res,next)=>
  {
-  const key = req.originalUrl
+  const key = decodeURIComponent(req.originalUrl); 
 
   const cachedResponse =cache.get(key)
   if(cachedResponse)
