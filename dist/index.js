@@ -4,12 +4,21 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import NodeCache from 'node-cache';
 import cors from "cors";
+import cron from "node-cron";
+import fetch from "node-fetch";
 const app = express();
 (() => {
     //  let log = console.log
     const context = new Date().toISOString();
     console.log = console.log.bind(console, context);
 })();
+//cron job to keep the render app awake by calling it every 10 minutes
+cron.schedule('*/10 * * * *', async () => {
+    console.log(`pinging the render app at time ${new Date().toISOString()}`);
+    const response = await fetch("https://scraper-pacx.onrender.com/status");
+    const data = await response.json();
+    console.log(data);
+});
 app.use(cors());
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" :response-time ms'));
 export const cache = new NodeCache();
