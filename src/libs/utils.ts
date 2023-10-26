@@ -23,7 +23,7 @@ export const parseTime = (time :string):string =>{
 
   const TWO_HOURS =(60*2) * 60 * 1000
    
-  let timePeriod = time.includes("PM") ? "PM" : "AM";
+  let timePeriod = time?.includes("PM") ? "PM" : "AM";
    
   const found=time.split(/:| {1}/g)
   let hours : Number

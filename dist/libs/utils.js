@@ -17,7 +17,7 @@ export const requestOptions = {
  */
 export const parseTime = (time) => {
     const TWO_HOURS = (60 * 2) * 60 * 1000;
-    let timePeriod = time.includes("PM") ? "PM" : "AM";
+    let timePeriod = (time === null || time === void 0 ? void 0 : time.includes("PM")) ? "PM" : "AM";
     const found = time.split(/:| {1}/g);
     let hours;
     if (Number(found[0]) == 12) {
@@ -32,3 +32,4 @@ export const parseTime = (time) => {
     let after = date.addMilliseconds(event, -TWO_HOURS);
     return date.format(after, 'hh:mm A');
 };
+//# sourceMappingURL=utils.js.map

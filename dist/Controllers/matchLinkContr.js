@@ -39,3 +39,4 @@ export const matchLinkContr = async (req, res) => {
     cache.set(teams + server, linkData, 60 * 3);
     res.status(200).json({ m3u8Data: linkData });
 };
+//# sourceMappingURL=matchLinkContr.js.map

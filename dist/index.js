@@ -66,3 +66,4 @@ app.listen(port, () => {
     console.info("server listening on http://localhost:" + port);
 });
 export default app;
+//# sourceMappingURL=index.js.map

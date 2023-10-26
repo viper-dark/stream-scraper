@@ -35,3 +35,4 @@ export async function get_server(first_team, second_team) {
     }
     return data;
 }
+//# sourceMappingURL=server1.js.map

@@ -17,8 +17,8 @@ function matchData(day = "today") {
         }
         const website = process.env.YALLA_KORA;
         const url = day == "today"
-            ? website + "today-matches1/"
-            : `${website}/matches-${day}`;
+            ? website
+            : `${website}/p/${day}-matches.html`;
         //making the request to the url
         try {
             const response = await fetch(url, requestOptions);
@@ -26,6 +26,10 @@ function matchData(day = "today") {
                 throw new Error("Network response was not ok");
             }
             const htmlContent = await response.text();
+            //  writeFile("tss.html",htmlContent, err => {
+            //   if (err) {
+            //    console.error(err);
+            //   }})
             html = htmlContent;
         }
         catch (error) {
@@ -35,28 +39,65 @@ function matchData(day = "today") {
         }
         console.log(" got the html fine !!");
         const $ = cherio.load(html);
-        const els = $("#today > div.albaflex > div").each(function (i, elem) {
+        const els = $("div.widget.HTML > div.match-container").each(function (i, elem) {
             const game = {};
             //team names
-            game.firstTeam = $(" a > div.left-team > div.team-name", elem).text();
-            game.secondTeam = $("a > div.right-team > div.team-name", elem).text();
+            game.firstTeam = $(" a > div.right-team", elem).text();
+            game.secondTeam = $(" a > div.left-team", elem).text();
             //team logos
-            game.firstTeamLogo = $("a > div.left-team > div.team-logo > img", elem)
-                .attr("data-src");
-            game.secondTeamLogo = $("a > div.right-team > div.team-logo > img", elem)
-                .attr("data-src");
+            game.firstTeamLogo = $("a > div.right-team > div.team-logo > img", elem)
+                .attr("data-img");
+            game.secondTeamLogo = $(" a > div.left-team > div.team-logo > img", elem)
+                .attr("data-img");
             //championship
-            game.championship = $("a > div.match-info > ul > li", elem).eq(2).text();
+            game.championship = $(" a > div.match-info > ul > li > span", elem).eq(2).text().trim();
             //commentators
-            game.comentator = $(" a > div.match-info > ul > li", elem).eq(1).text();
+            game.channels = $(" a > div.match-info > ul > li > span", elem).eq(1).text().trim();
             //channels
-            game.channels = $("a > div.match-info > ul > li", elem).eq(0).text();
+            game.comentator = $("a > div.match-info > ul > li > span", elem).eq(0).text().trim();
             //result or game time
             // const resOrtime = $("td span.fc_time", elem).text();
-            const time = $("#match-time", elem).text();
             const result = $("#result", elem).text();
-            const notStarted = $(" a > div.match-center > div > div.not-start", elem).text();
-            const ended = $(" a > div.match-center > div > div.end", elem).text();
+            let time = timeStampToTime($(" a > div.match-center > div > div.date", elem).attr("data-start"));
+            let timeStart = $(" a > div.match-center > div > div.date", elem).attr("data-start");
+            let timeEnd = $(" a > div.match-center > div > div.date", elem).attr("data-gameends");
+            function timeStampToTime(time) {
+                const timeRegex = /T(\d{2}:\d{2}):\d{2}\+\d{2}:\d{2}/;
+                const match = time.match(timeRegex);
+                if (!match) {
+                    return "";
+                }
+                return match[1];
+            }
+            function isTimeGreaterThanCurrentTime(time) {
+                const timeRegex = /T(\d{2}:\d{2}):\d{2}\+\d{2}:\d{2}/;
+                const match = time.match(timeRegex);
+                if (!match) {
+                    return false;
+                }
+                time = match[1];
+                const offset = match[0].split("+")[1]; // The second capturing group contains the offset
+                // Parse the extracted time string
+                const timeParts = time.split(":");
+                // Create a Date object for the target time
+                const targetTime = new Date();
+                targetTime.setUTCHours(parseInt(timeParts[0], 10));
+                targetTime.setUTCMinutes(parseInt(timeParts[1], 10));
+                // Calculate the offset in minutes
+                const offsetParts = offset.split(":");
+                const offsetMinutes = parseInt(offsetParts[0], 10) * 60 + parseInt(offsetParts[1], 10);
+                // Adjust the target time by the offset
+                targetTime.setMinutes(targetTime.getUTCMinutes() - offsetMinutes);
+                // Get the current UTC time
+                const currentUTC = new Date();
+                if (currentUTC >= targetTime) {
+                    console.log("The current time is equal to or greater than the target time.");
+                    return true;
+                }
+                return false;
+            }
+            const started = isTimeGreaterThanCurrentTime(timeStart);
+            const ended = isTimeGreaterThanCurrentTime(timeEnd);
             //handeling time
             //  let timePeriod = time.includes("PM") ? "PM" : "AM";
             /*   const singleDigit = time.match(/\d/) + "";
@@ -71,11 +112,20 @@ function matchData(day = "today") {
             } */
             //  const houss= time.split(":")        const minutes = timeDigits[1];
             game.time = parseTime(time);
-            game.started = notStarted ? false : true;
+            game.started = started;
             //handeling result if endded or started set time
             game.result = game.started || ended ? result : undefined;
             //checking if game has ended or not
-            game.hasEnded = ended ? true : false;
+            game.ended = ended;
+            console.log(game);
+            if (day == "tomorrow") {
+                game.started = false;
+                game.ended = false;
+            }
+            else if (day == "yesterday") {
+                game.started = false;
+                game.ended = true;
+            }
             games.push(game);
         });
         cache.set(day, games, 60);
@@ -85,3 +135,4 @@ function matchData(day = "today") {
     };
 }
 export default matchData;
+//# sourceMappingURL=scraper.js.map

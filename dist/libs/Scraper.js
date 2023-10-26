@@ -191,3 +191,4 @@ export class Scraper {
         return true;
     }
 }
+//# sourceMappingURL=Scraper.js.map

@@ -33,3 +33,4 @@ async function getStream(iframeLink) {
     return { m3uLink, Referer };
 }
 export default getStream;
+//# sourceMappingURL=scrapeStream.js.map
