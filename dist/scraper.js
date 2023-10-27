@@ -116,15 +116,15 @@ function matchData(day = "today") {
             //handeling result if endded or started set time
             game.result = game.started || ended ? result : undefined;
             //checking if game has ended or not
-            game.ended = ended;
+            game.hasEnded = ended;
             console.log(game);
             if (day == "tomorrow") {
                 game.started = false;
-                game.ended = false;
+                game.hasEnded = false;
             }
             else if (day == "yesterday") {
                 game.started = false;
-                game.ended = true;
+                game.hasEnded = true;
             }
             games.push(game);
         });
