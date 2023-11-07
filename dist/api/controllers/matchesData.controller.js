@@ -106,7 +106,7 @@ function matchData(day = "today") {
                 game.ended = false;
             }
             else if (day == "yesterday") {
-                game.started = false;
+                game.started = true;
                 game.ended = true;
             }
             games.push(game);
